@@ -2,23 +2,30 @@
 
 version: '3.3'
 services:
-  mysql:
-    image: mysql:8
+  proddb:
+    image: leodatabaselearner-proddb
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
-      MYSQL_ROOT_HOST: '%'
+      POSTGRES_PASSWORD: app
     ports:
-      - 3306:3306
+      - "5432:5432"
     expose:
-      - 3306
+      - 5432
     volumes:
-      - database:/var/lib/
+      - proddata:/var/lib/postgresql/data
+  studentdb:
+    image: leodatabaselearner-studentdb
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: app
+    ports:
+      - "5433:5432"
+    expose:
+      - 5433
+    volumes:
+      - studentdata:/var/lib/postgresql/data
   appsrv:
-    image: leo-appsrv
+    image: leocloud-appsrv
     deploy:
       restart_policy:
         condition: on-failure
@@ -30,7 +37,7 @@ services:
     depends_on:
       - mysql
   nginx:
-    image: leo-nginx
+    image: leocloud-nginx
     deploy:
       restart_policy:
         condition: on-failure
@@ -40,4 +47,5 @@ services:
     depends_on:
       - appsrv
 volumes:
-  database:
+  proddata:
+  studentdata:
