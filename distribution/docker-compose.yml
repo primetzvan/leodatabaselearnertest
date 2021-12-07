@@ -1,22 +1,26 @@
 # docker file for local development and debugging
-version: '3.3'
+version: "3.3"
 services:
-  mysql:
-    image: mysql:8
-    environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
-      MYSQL_ROOT_HOST: '%'
+  proddb:
+    build: proddb
     ports:
-      - 3306:3306
-    expose:
-      - 3306
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: app
     volumes:
-      - database:/var/lib/
+      - proddata:/var/lib/postgresql/data
+  studentdb:
+    build: studentdb
+    ports:
+      - "5433:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: app
+    volumes:
+      - studentdata:/var/lib/postgresql/data
   appsrv:
-    build: 
+    build:
       context: ./appsrv
       dockerfile: Dockerfile.jvm
     deploy:
@@ -40,4 +44,5 @@ services:
     depends_on:
       - appsrv
 volumes:
-  database:
+  proddata:
+  studentdata:
