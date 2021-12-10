@@ -24,3 +24,4 @@ NOTE: you must not change the settings of your gh-repo for adding the gh-pages
 ./run-inside-docker.sh
 
 TIP: you don't need the asciidocs.demo - folder. You are free to delete it.
+
