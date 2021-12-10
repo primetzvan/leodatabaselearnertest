@@ -33,3 +33,4 @@ GIT_GLOBAL_USER_NAME=<your git - username>
 ```
 
 * run the script `run-inside-docker.sh`
+* 
